@@ -1,20 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import DashboardLayout from './layouts/DashboardLayout';
-import Dashboard from './pages/Dashboard';
-import TemplateManagement from './pages/TemplateManagement';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Dashboard from "./pages/dashboard/Dashboard";
+import TemplateManagement from "./pages/template/TemplateManagement";
+import DocumentSubmission from "@/pages/submission/DocumentSubmission";
+import MySubmissions from "./pages/submission/MySubmissions";
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
+
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path='/templates' element={<TemplateManagement/>} />
+          <Route path="/templates" element={<TemplateManagement />} />
+          <Route path="/submissions/new" element={<DocumentSubmission />} />
+          <Route path="/submissions/my" element={<MySubmissions />} />
         </Route>
       </Routes>
     </Router>

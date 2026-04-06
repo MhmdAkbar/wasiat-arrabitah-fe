@@ -1,9 +1,9 @@
-import { Outlet, Navigate } from 'react-router-dom';
-import Sidebar from '../components/organisms/Sidebar';
-import Navbar from '../components/organisms/Navbar';
+import { Outlet, Navigate } from "react-router-dom";
+import Sidebar from "../components/organisms/layout/Sidebar";
+import Navbar from "../components/organisms/layout/Navbar";
 
 export default function DashboardLayout() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   // Proteksi Route Dasar
   if (!token) {
