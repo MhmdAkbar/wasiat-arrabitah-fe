@@ -18,7 +18,13 @@ export default function Sidebar() {
           <i className="fa-solid fa-house w-5 text-center"></i>
           Dashboard
         </Link>
-        {/* Tambahkan menu lain di sini */}
+
+
+        {/* link ke templates */}
+        <Link to="/templates" className="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-lg transition text-gray-300 hover:text-white border-l-4 border-transparent">
+          <i className="fa-solid fa-file-invoice w-5 text-center"></i>
+          Manajemen Template
+        </Link>
       </nav>
       
       <div className="p-4 border-t border-white/10 text-xs text-center text-gray-400">

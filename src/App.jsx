@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
+import TemplateManagement from './pages/TemplateManagement';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/templates' element={<TemplateManagement/>} />
         </Route>
       </Routes>
     </Router>
