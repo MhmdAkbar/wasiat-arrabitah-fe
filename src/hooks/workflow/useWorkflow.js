@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { api } from '@/utils/api'; // <-- Import API Wrapper
 
 export const useWorkflow = () => {
   const [loading, setLoading] = useState(false);
@@ -9,19 +10,13 @@ export const useWorkflow = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3000/api/workflows/${formTemplateId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const result = await response.json();
+      const result = await api(`/api/workflows/${formTemplateId}`, { method: 'GET' });
       
-      if (response.ok && result.success) {
+      if (result.success) {
         // Kembalikan array of approverRoles ['verifier', 'manager'] agar mudah di-bind ke UI
         return result.data.map(item => item.approverRole);
-      } else {
-        // Jika 404/Kosong, kembalikan array kosong, bukan melempar error keras
-        return []; 
       }
+      return []; 
     } catch (err) {
       console.error("Error fetching workflow:", err);
       return [];
@@ -35,23 +30,15 @@ export const useWorkflow = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3000/api/workflows/${formTemplateId}`, {
+      const result = await api(`/api/workflows/${formTemplateId}`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
         body: JSON.stringify({ approverRoles })
       });
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
+      if (result.success) {
         return true;
-      } else {
-        throw new Error(result.message || 'Gagal menyimpan workflow');
       }
+      return false;
     } catch (err) {
       alert(err.message);
       return false;

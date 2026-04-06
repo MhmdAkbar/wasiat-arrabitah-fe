@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { api } from '@/utils/api'; // <-- Import API Wrapper
 
 export const useTemplates = () => {
   const [templates, setTemplates] = useState([]);
@@ -8,16 +9,10 @@ export const useTemplates = () => {
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/api/templates', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const result = await response.json();
+      const result = await api('/api/templates', { method: 'GET' });
       
-      if (response.ok && result.success) {
+      if (result.success) {
         setTemplates(result.data);
-      } else {
-        throw new Error(result.message || 'Gagal memuat template');
       }
     } catch (err) {
       setError(err.message);
@@ -32,14 +27,8 @@ export const useTemplates = () => {
 
   const createTemplate = async (templateData) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://localhost:3000/api/templates', {
+      const result = await api('/api/templates', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
         body: JSON.stringify({
           code: templateData.code,
           name: templateData.name,
@@ -47,14 +36,11 @@ export const useTemplates = () => {
         })
       });
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
+      if (result.success) {
         fetchTemplates(); 
         return true; 
-      } else {
-        throw new Error(result.message || 'Gagal membuat template');
       }
+      return false;
     } catch (err) {
       alert(err.message);
       return false;

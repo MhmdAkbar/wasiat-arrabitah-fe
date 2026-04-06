@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { api } from '@/utils/api';
 
 export const useLogin = () => {
   const { t } = useTranslation();
@@ -17,15 +18,12 @@ export const useLogin = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const result = await api('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
       
-      const result = await response.json();
-
-      if (response.ok && result.success) {
+      if (result.success) {
         const token = result.data.token;
         const user = result.data.user;
 
@@ -39,8 +37,6 @@ export const useLogin = () => {
         } else {
           throw new Error('Login berhasil, tapi token tidak ditemukan di JSON.');
         }
-      } else {
-        throw new Error(result.message || t('auth.login_err'));
       }
     } catch (err) {
       setError(err.message === 'Failed to fetch' ? 'Koneksi ke Server Gagal (Backend Mati/CORS).' : err.message);
