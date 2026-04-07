@@ -7,7 +7,7 @@ export default function Navbar({ toggleSidebar }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const email = localStorage.getItem("userEmail") || "admin@arrabitah.id";
+  const email = localStorage.getItem("userEmail") || "ridzwan@arrabitah.com";
   const name = localStorage.getItem("userName") || "Administrator";
   const role = localStorage.getItem("userRole") || "staff";
 

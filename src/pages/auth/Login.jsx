@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LangToggle from "@/components/atoms/LangToggle";
-import { useLogin } from "@/hooks/auth/useLogin"; // Import Custom Hook
+import { useLogin } from "@/hooks/auth/useLogin";
 
 export default function Login() {
   const { t } = useTranslation();
+  
+  // State untuk kontrol visibility password
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Ambil state dan fungsi dari hook
   const {
     email,
     setEmail,
@@ -45,24 +48,48 @@ export default function Login() {
             <input
               type="email"
               required
-              placeholder="admin@arrabitah.id"
+              placeholder="ridzwan@arrabitah.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm"
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t("auth.password")}
             </label>
-            <input
-              type="password"
-              required
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm pr-11"
+              />
+              
+              {/* Container Button dibuat dengan ukuran tetap agar ikon di dalamnya presisi */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-mosque-primary focus:outline-none transition-colors duration-200"
+              >
+                {/* Ikon Mata Terbuka */}
+                <i 
+                  className={`fa-solid fa-eye absolute transition-all duration-300 ease-in-out ${
+                    showPassword ? "opacity-0 scale-50 rotate-[-10deg]" : "opacity-100 scale-100 rotate-0"
+                  }`}
+                ></i>
+                
+                {/* Ikon Mata Tertutup */}
+                <i 
+                  className={`fa-solid fa-eye-slash absolute transition-all duration-300 ease-in-out ${
+                    showPassword ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 rotate-[10deg]"
+                  }`}
+                ></i>
+              </button>
+            </div>
           </div>
 
           {error && (
