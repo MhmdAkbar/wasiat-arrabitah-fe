@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/utils/api';
+import toast from 'react-hot-toast';
 
 export const useApprovalTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -12,7 +13,7 @@ export const useApprovalTasks = () => {
   const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
-      // Mengambil data task sesuai role user
+      // Fetch tasks based on user role
       const result = await api('/api/submissions/tasks', { method: 'GET' });
       if (result.success) setTasks(result.data);
     } catch (err) {
@@ -29,21 +30,21 @@ export const useApprovalTasks = () => {
       const result = await api(`/api/submissions/${id}`, { method: 'GET' });
       if (result.success) setDetailData(result.data);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     } finally {
       setDetailLoading(false);
     }
   };
 
-  // --- FITUR BARU: PROSES PERSETUJUAN ---
+  // --- NEW FEATURE: APPROVAL PROCESS ---
   const processApproval = async (approvalId, action, comments) => {
     if ((action === 'reject' || action === 'return') && !comments.trim()) {
-      alert('Catatan/Komentar wajib diisi jika menolak atau mengembalikan dokumen!');
+      toast.error('Notes/Comments are required when rejecting or returning a document!');
       return;
     }
 
-    const actionText = action === 'approve' ? 'menyetujui' : action === 'reject' ? 'menolak' : 'mengembalikan';
-    if (!window.confirm(`Apakah Anda yakin ingin ${actionText} dokumen ini?`)) return;
+    const actionText = action === 'approve' ? 'approve' : action === 'reject' ? 'reject' : 'return';
+    if (!window.confirm(`Are you sure you want to ${actionText} this document?`)) return;
 
     try {
       const result = await api(`/api/approvals/${approvalId}`, {
@@ -52,12 +53,12 @@ export const useApprovalTasks = () => {
       });
 
       if (result.success) {
-        alert('Tindakan berhasil diproses!');
-        setDetailData(null); // Tutup modal
-        fetchTasks(); // Refresh daftar tugas
+        toast.success('Action processed successfully!');
+        setDetailData(null); // Close modal
+        fetchTasks(); // Refresh task list
       }
     } catch (err) {
-      alert(`Gagal memproses: ${err.message}`);
+      toast.error(`Failed to process: ${err.message}`);
     }
   };
 

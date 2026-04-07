@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { api } from '@/utils/api'; // <-- Import API Wrapper
+import toast from 'react-hot-toast';
 
 export const useWorkflow = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,7 @@ export const useWorkflow = () => {
       }
       return false;
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
       return false;
     } finally {
       setLoading(false);

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/utils/api'; 
+import toast from 'react-hot-toast';
 
 export const useMySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -28,29 +29,29 @@ export const useMySubmissions = () => {
       const result = await api(`/api/submissions/${id}`, { method: 'GET' });
       if (result.success) setDetailData(result.data);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     } finally {
       setDetailLoading(false);
     }
   };
 
-  // --- FITUR BARU: BATALKAN PENGAJUAN ---
+  // --- NEW FEATURE: CANCEL SUBMISSION ---
   const cancelSubmission = async (id) => {
-    if (!window.confirm('Apakah Anda yakin ingin membatalkan pengajuan ini?')) return;
+    if (!window.confirm('Are you sure you want to cancel this submission?')) return;
     
     try {
       const result = await api(`/api/submissions/${id}`, { method: 'DELETE' });
       if (result.success) {
-        alert('Pengajuan berhasil dibatalkan.');
-        setDetailData(null); // Tutup modal
-        fetchMySubmissions(); // Refresh tabel
+        toast.success('Submission cancelled successfully.');
+        setDetailData(null); // Close modal
+        fetchMySubmissions(); // Refresh table
       }
     } catch (err) {
-      alert(`Gagal membatalkan: ${err.message}`);
+      toast.error(`Failed to cancel: ${err.message}`);
     }
   };
 
-  // --- FITUR BARU: REVISI PENGAJUAN ---
+  // --- NEW FEATURE: REVISE SUBMISSION ---
   const resubmitSubmission = async (id, updatedFormData) => {
     try {
       const result = await api(`/api/submissions/${id}/resubmit`, { 
@@ -58,12 +59,12 @@ export const useMySubmissions = () => {
         body: JSON.stringify({ formData: updatedFormData })
       });
       if (result.success) {
-        alert('Dokumen berhasil direvisi dan dikirim ulang.');
-        setDetailData(null); // Tutup modal
-        fetchMySubmissions(); // Refresh tabel
+        toast.success('Document successfully revised and resubmitted.');
+        setDetailData(null); // Close modal
+        fetchMySubmissions(); // Refresh table
       }
     } catch (err) {
-      alert(`Gagal merevisi: ${err.message}`);
+      toast.error(`Failed to revise: ${err.message}`);
     }
   };
 
@@ -79,7 +80,7 @@ export const useMySubmissions = () => {
     detailLoading,
     fetchDetail,
     clearDetail: () => setDetailData(null),
-    cancelSubmission, // Ekspor fungsi baru
-    resubmitSubmission // Ekspor fungsi baru
+    cancelSubmission, // Export new function
+    resubmitSubmission // Export new function
   };
 };

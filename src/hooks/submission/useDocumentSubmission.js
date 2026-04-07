@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '@/utils/api'; // <-- Import Pintu Gerbang Kita
+import toast from 'react-hot-toast';
 
 export const useDocumentSubmission = () => {
   const { t } = useTranslation();
@@ -71,7 +72,7 @@ export const useDocumentSubmission = () => {
       });
 
       if (result.success) {
-        alert(`${t('submission.success')} ${result.data.docNumber}`);
+        toast.success(`${t('submission.success')} ${result.data.docNumber}`);
         setSelectedTemplate(null);
         setTitle('');
         setFormData({});

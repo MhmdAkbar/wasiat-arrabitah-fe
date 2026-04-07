@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/utils/api'; // <-- Import API Wrapper
+import toast from 'react-hot-toast';
 
 export const useTemplates = () => {
   const [templates, setTemplates] = useState([]);
@@ -42,7 +43,7 @@ export const useTemplates = () => {
       }
       return false;
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
       return false;
     }
   };

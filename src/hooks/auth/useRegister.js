@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '@/utils/api';
+import toast from 'react-hot-toast';
 
 export const useRegister = () => {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ export const useRegister = () => {
         body: JSON.stringify(payload)
       });
       
-      alert('Registration successful! Please login.');
+      toast.success('Registration successful! Please login.');
       navigate('/');
     } catch (err) {
       setError(err.message === 'Failed to fetch' ? 'Server Connection Error.' : err.message);
