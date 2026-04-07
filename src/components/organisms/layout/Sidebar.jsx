@@ -12,11 +12,13 @@ export default function Sidebar() {
   return (
     <aside className="w-full md:w-64 bg-mosque-dark text-white flex flex-col shadow-xl z-10 relative shrink-0">
       <div className="absolute right-0 top-0 w-1 h-full bg-mosque-gold"></div>
-      
+
       <div className="p-6 flex items-center gap-3 border-b border-white/10">
         <i className="fa-solid fa-mosque text-mosque-gold text-2xl"></i>
         <div>
-          <h2 className="text-lg font-bold tracking-wider leading-tight">BPM</h2>
+          <h2 className="text-lg font-bold tracking-wider leading-tight">
+            BPM
+          </h2>
           <p className="text-xs text-mosque-gold font-medium">Ar-Rabitah</p>
         </div>
       </div>
@@ -44,6 +46,14 @@ export default function Sidebar() {
         <NavLink to="/submissions/my" className={getLinkStyle}>
           <i className="fa-solid fa-clock-rotate-left w-5 text-center"></i>
           Riwayat Pengajuan
+        </NavLink>
+
+        <NavLink
+          to="/submissions/tasks"
+          className="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-lg transition text-gray-300 hover:text-white border-l-4 border-transparent"
+        >
+          <i className="fa-solid fa-inbox w-5 text-center"></i>
+          Tugas Persetujuan
         </NavLink>
       </nav>
 
