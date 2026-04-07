@@ -17,7 +17,7 @@ export default function DocumentDetailModal({
   const [editFormData, setEditFormData] = useState({});
   const [comments, setComments] = useState('');
 
-  // Reset state saat modal dibuka/tutup
+  // Reset state when modal opens/closes
   useEffect(() => {
     if (isOpen && detailData) {
       setIsEditing(false);
@@ -40,7 +40,7 @@ export default function DocumentDetailModal({
     setIsEditing(false);
   };
 
-  // Logika pengecekan status
+  // Status checking logic
   const activeApproval = detailData?.approvals?.find(a => a.status === 'submitted');
   const isReturned = detailData?.status === 'returned';
 
@@ -66,7 +66,7 @@ export default function DocumentDetailModal({
           {loading || !detailData ? (
             <div className="flex flex-col items-center justify-center py-10">
               <i className="fa-solid fa-spinner fa-spin text-3xl text-mosque-primary mb-3"></i>
-              <p className="text-gray-500 text-sm">Memuat detail dokumen...</p>
+              <p className="text-gray-500 text-sm">Loading document details...</p>
             </div>
           ) : (
             <div className="space-y-6">
@@ -99,7 +99,7 @@ export default function DocumentDetailModal({
                   </h5>
                   {isReturned && !isEditing && (
                     <button onClick={() => setIsEditing(true)} className="text-xs font-bold text-mosque-primary hover:underline">
-                      <i className="fa-solid fa-pen-to-square mr-1"></i> Edit Revisi
+                      <i className="fa-solid fa-pen-to-square mr-1"></i> Edit Revision
                     </button>
                   )}
                 </div>
@@ -180,8 +180,8 @@ export default function DocumentDetailModal({
           <div>
             {isEditing ? (
               <div className="flex gap-2">
-                <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition">Batal</button>
-                <button onClick={handleSaveRevision} className="px-4 py-2 text-sm font-bold text-white bg-mosque-primary hover:bg-mosque-dark rounded-lg transition shadow-md">Simpan & Kirim Ulang</button>
+                <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition">Cancel</button>
+                <button onClick={handleSaveRevision} className="px-4 py-2 text-sm font-bold text-white bg-mosque-primary hover:bg-mosque-dark rounded-lg transition shadow-md">Save & Resubmit</button>
               </div>
             ) : (
               !loading && detailData && detailData.status === 'submitted' && cancelSubmission && (
@@ -189,7 +189,7 @@ export default function DocumentDetailModal({
                   onClick={() => cancelSubmission(detailData.id)} 
                   className="px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 rounded-lg transition flex items-center gap-2"
                 >
-                  <i className="fa-solid fa-ban"></i> Batalkan Pengajuan
+                  <i className="fa-solid fa-ban"></i> Cancel Submission
                 </button>
               )
             )}
@@ -197,7 +197,7 @@ export default function DocumentDetailModal({
 
           {!isEditing && (
             <button type="button" onClick={onClose} className="px-6 py-2.5 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
-              Tutup
+              Close
             </button>
           )}
         </div>
