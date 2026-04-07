@@ -61,7 +61,7 @@ const resources = {
         "step": "Step",
         "add_step": "Add Approval Step",
         "no_workflow": "No workflow has been set up yet.",
-        "save_workflow": "Save Workflow",
+        "save_workflow": "Save Workflow"
       },
       "submission": {
         "title": "Document Request",
@@ -85,7 +85,14 @@ const resources = {
         "detail_title": "Document Details",
         "submitter": "Submitter",
         "form_data": "Form Data",
-        "audit_trail": "Audit Trail & Approvals"
+        "audit_trail": "Audit Trail & Approvals",
+        
+        // --- KEY BARU YANG DITAMBAHKAN UNTUK BAHASA INGGRIS ---
+        "approval_action": "Approval Action",
+        "comments_placeholder": "Add your comments or reasons here...",
+        "reject": "Reject",
+        "return": "Return for Revision",
+        "approve": "Approve"
       }
     }
   },
@@ -148,7 +155,7 @@ const resources = {
         "step": "Langkah",
         "add_step": "Tambah Langkah Persetujuan",
         "no_workflow": "Belum ada alur persetujuan yang diatur.",
-        "save_workflow": "Simpan Alur",
+        "save_workflow": "Simpan Alur"
       },
       "submission": {
         "title": "Pengajuan Dokumen",
@@ -172,7 +179,14 @@ const resources = {
         "detail_title": "Detail Dokumen",
         "submitter": "Pemohon",
         "form_data": "Isi Formulir",
-        "audit_trail": "Riwayat Persetujuan (Audit)"
+        "audit_trail": "Riwayat Persetujuan (Audit)",
+        
+        // --- KEY BARU YANG DITAMBAHKAN UNTUK BAHASA INDONESIA ---
+        "approval_action": "Tindakan Persetujuan",
+        "comments_placeholder": "Tambahkan catatan atau alasan di sini...",
+        "reject": "Tolak",
+        "return": "Kembalikan (Revisi)",
+        "approve": "Setujui"
       }
     }
   }

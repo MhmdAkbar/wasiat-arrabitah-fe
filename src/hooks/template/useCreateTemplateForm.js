@@ -5,16 +5,16 @@ export const useCreateTemplateForm = (createTemplate, onClose) => {
   const [name, setName] = useState('');
   const [formError, setFormError] = useState('');
   
-  // Gunakan UUID untuk React Key agar reconciliation tidak kacau saat dihapus/ditambah
+  // Use UUID for React Key to prevent reconciliation issues when adding/removing
   const [fields, setFields] = useState([
-    { id: crypto.randomUUID(), key: 'keperluan', label: 'Judul Keperluan', type: 'text', required: true, isKeyEdited: false }
+    { id: crypto.randomUUID(), key: 'purpose_title', label: 'Purpose Title', type: 'text', required: true, isKeyEdited: false }
   ]);
 
   const resetForm = () => {
     setCode('');
     setName('');
     setFormError('');
-    setFields([{ id: crypto.randomUUID(), key: 'keperluan', label: 'Judul Keperluan', type: 'text', required: true, isKeyEdited: false }]);
+    setFields([{ id: crypto.randomUUID(), key: 'purpose_title', label: 'Purpose Title', type: 'text', required: true, isKeyEdited: false }]);
   };
 
   const handleAddField = () => {
@@ -46,15 +46,15 @@ export const useCreateTemplateForm = (createTemplate, onClose) => {
     setFormError('');
     
     if (fields.some(f => !f.label.trim() || !f.key.trim())) {
-      setFormError('Semua Label dan Key wajib diisi!');
+      setFormError('All Labels and Keys are required!');
       return false;
     }
 
-    // Validasi duplikasi key
+    // Validate duplicate keys
     const keys = fields.map(f => f.key);
     const hasDuplicateKeys = keys.some((key, index) => keys.indexOf(key) !== index);
     if (hasDuplicateKeys) {
-      setFormError('Terdapat Key yang duplikat! Key harus unik.');
+      setFormError('Duplicate Keys found! Keys must be unique.');
       return false;
     }
 
