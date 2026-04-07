@@ -35,9 +35,9 @@ export default function ApprovalTasks() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500"><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Memuat tugas...</td></tr>
+                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500"><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Loading tasks...</td></tr>
               ) : tasks.length === 0 ? (
-                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500">Tidak ada dokumen yang menunggu persetujuan Anda.</td></tr>
+                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500">No documents pending your approval.</td></tr>
               ) : (
                 tasks.map((doc) => (
                   <tr key={doc.id} className="hover:bg-gray-50 transition border-l-4 border-l-orange-400">
@@ -53,7 +53,7 @@ export default function ApprovalTasks() {
                         onClick={() => fetchDetail(doc.id)}
                         className="px-3 py-1.5 bg-mosque-primary text-white hover:bg-mosque-dark rounded text-xs font-bold transition flex items-center gap-1.5 ml-auto shadow-sm"
                       >
-                        <i className="fa-solid fa-stamp"></i> Proses
+                        <i className="fa-solid fa-stamp"></i> Process
                       </button>
                     </td>
                   </tr>
@@ -69,7 +69,7 @@ export default function ApprovalTasks() {
         onClose={clearDetail} 
         detailData={detailData} 
         loading={detailLoading} 
-        processApproval={processApproval} // <--- Kirim fungsi ini agar kotak keputusan muncul di Modal
+        processApproval={processApproval} // <--- Pass this function so the decision box appears in the Modal
       />
     </div>
   );

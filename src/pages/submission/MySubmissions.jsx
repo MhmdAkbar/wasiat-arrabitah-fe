@@ -12,12 +12,12 @@ export default function MySubmissions() {
     detailLoading, 
     fetchDetail, 
     clearDetail,
-    cancelSubmission // Destrukturisasi fungsi pembatalan dari hook
+    cancelSubmission // Destructure the cancel function from the hook
   } = useMySubmissions();
 
   return (
     <div className="space-y-6">
-      {/* Header Halaman */}
+      {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">{t('submission.my_list')}</h2>
@@ -31,14 +31,14 @@ export default function MySubmissions() {
         </div>
       )}
 
-      {/* Tabel Data */}
+      {/* Data Table */}
       <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-100">
                 <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('submission.doc_no')}</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('submission.form_type')} / Judul</th>
+                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('submission.form_type')} / Title</th>
                 <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('submission.status')}</th>
                 <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('submission.date')}</th>
                 <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">{t('submission.action')}</th>
@@ -49,13 +49,13 @@ export default function MySubmissions() {
                 <tr>
                   <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
                     <i className="fa-solid fa-circle-notch fa-spin mr-2 text-mosque-primary"></i> 
-                    Memuat data...
+                    Loading data...
                   </td>
                 </tr>
               ) : submissions.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
-                    Anda belum pernah mengajukan dokumen.
+                    You have never submitted a document.
                   </td>
                 </tr>
               ) : (
@@ -94,13 +94,13 @@ export default function MySubmissions() {
         </div>
       </div>
 
-      {/* Render Modal Detail */}
+      {/* Render Detail Modal */}
       <DocumentDetailModal 
         isOpen={!!detailData || detailLoading} 
         onClose={clearDetail} 
         detailData={detailData} 
         loading={detailLoading} 
-        cancelSubmission={cancelSubmission} // Meneruskan fungsi cancel ke modal
+        cancelSubmission={cancelSubmission} // Pass the cancel function to the modal
       />
     </div>
   );
