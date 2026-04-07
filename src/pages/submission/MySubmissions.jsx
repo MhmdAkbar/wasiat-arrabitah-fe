@@ -1,13 +1,18 @@
 import { useTranslation } from 'react-i18next';
-// PERHATIKAN JALUR IMPORT YANG BARU:
 import { useMySubmissions } from '../../hooks/submission/useMySubmissions';
 import DocumentDetailModal from '../../components/organisms/submission/DocumentDetailModal';
 
 export default function MySubmissions() {
   const { t } = useTranslation();
   const { 
-    submissions, loading, error, 
-    detailData, detailLoading, fetchDetail, clearDetail 
+    submissions, 
+    loading, 
+    error, 
+    detailData, 
+    detailLoading, 
+    fetchDetail, 
+    clearDetail,
+    cancelSubmission // Destrukturisasi fungsi pembatalan dari hook
   } = useMySubmissions();
 
   return (
@@ -20,7 +25,11 @@ export default function MySubmissions() {
         </div>
       </div>
 
-      {error && <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-100">{error}</div>}
+      {error && (
+        <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-100 transition-all">
+          <i className="fa-solid fa-circle-exclamation mr-2"></i> {error}
+        </div>
+      )}
 
       {/* Tabel Data */}
       <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
@@ -37,19 +46,32 @@ export default function MySubmissions() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500"><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Memuat data...</td></tr>
+                <tr>
+                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                    <i className="fa-solid fa-circle-notch fa-spin mr-2 text-mosque-primary"></i> 
+                    Memuat data...
+                  </td>
+                </tr>
               ) : submissions.length === 0 ? (
-                <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-500">Anda belum pernah mengajukan dokumen.</td></tr>
+                <tr>
+                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                    Anda belum pernah mengajukan dokumen.
+                  </td>
+                </tr>
               ) : (
                 submissions.map((doc) => (
-                  <tr key={doc.id} className="hover:bg-gray-50 transition">
+                  <tr key={doc.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 text-sm font-mono text-mosque-primary font-medium">{doc.docNumber}</td>
                     <td className="px-6 py-4">
                       <p className="text-sm text-gray-800 font-semibold">{doc.title}</p>
                       <p className="text-xs text-gray-500">{doc.formTemplate.name}</p>
                     </td>
                     <td className="px-6 py-4 text-sm">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-700">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        doc.status === 'submitted' ? 'bg-blue-100 text-blue-700' : 
+                        doc.status === 'returned' ? 'bg-orange-100 text-orange-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
                         {doc.status}
                       </span>
                     </td>
@@ -59,7 +81,7 @@ export default function MySubmissions() {
                     <td className="px-6 py-4 text-sm text-right">
                       <button 
                         onClick={() => fetchDetail(doc.id)}
-                        className="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-mosque-primary hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5 ml-auto"
+                        className="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-mosque-primary hover:text-white rounded text-xs font-bold transition-all flex items-center gap-1.5 ml-auto"
                       >
                         <i className="fa-solid fa-eye"></i> {t('submission.view_detail')}
                       </button>
@@ -72,14 +94,14 @@ export default function MySubmissions() {
         </div>
       </div>
 
-      {/* Render Modal Detail (Terbuka saat detailData ada isinya atau sedang loading) */}
+      {/* Render Modal Detail */}
       <DocumentDetailModal 
         isOpen={!!detailData || detailLoading} 
         onClose={clearDetail} 
         detailData={detailData} 
         loading={detailLoading} 
+        cancelSubmission={cancelSubmission} // Meneruskan fungsi cancel ke modal
       />
-
     </div>
   );
 }

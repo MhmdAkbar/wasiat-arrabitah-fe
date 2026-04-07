@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { api } from '@/utils/api'; // <-- Import Pintu Gerbang Kita
+import { api } from '@/utils/api'; 
 
 export const useMySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -34,6 +34,39 @@ export const useMySubmissions = () => {
     }
   };
 
+  // --- FITUR BARU: BATALKAN PENGAJUAN ---
+  const cancelSubmission = async (id) => {
+    if (!window.confirm('Apakah Anda yakin ingin membatalkan pengajuan ini?')) return;
+    
+    try {
+      const result = await api(`/api/submissions/${id}`, { method: 'DELETE' });
+      if (result.success) {
+        alert('Pengajuan berhasil dibatalkan.');
+        setDetailData(null); // Tutup modal
+        fetchMySubmissions(); // Refresh tabel
+      }
+    } catch (err) {
+      alert(`Gagal membatalkan: ${err.message}`);
+    }
+  };
+
+  // --- FITUR BARU: REVISI PENGAJUAN ---
+  const resubmitSubmission = async (id, updatedFormData) => {
+    try {
+      const result = await api(`/api/submissions/${id}/resubmit`, { 
+        method: 'PUT',
+        body: JSON.stringify({ formData: updatedFormData })
+      });
+      if (result.success) {
+        alert('Dokumen berhasil direvisi dan dikirim ulang.');
+        setDetailData(null); // Tutup modal
+        fetchMySubmissions(); // Refresh tabel
+      }
+    } catch (err) {
+      alert(`Gagal merevisi: ${err.message}`);
+    }
+  };
+
   useEffect(() => {
     fetchMySubmissions();
   }, [fetchMySubmissions]);
@@ -45,6 +78,8 @@ export const useMySubmissions = () => {
     detailData,
     detailLoading,
     fetchDetail,
-    clearDetail: () => setDetailData(null)
+    clearDetail: () => setDetailData(null),
+    cancelSubmission, // Ekspor fungsi baru
+    resubmitSubmission // Ekspor fungsi baru
   };
 };
