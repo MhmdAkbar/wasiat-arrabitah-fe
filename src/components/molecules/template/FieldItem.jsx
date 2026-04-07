@@ -16,14 +16,14 @@ export default function FieldItem({ field, onChange, onRemove, canRemove }) {
 
       <div className="w-full md:w-1/3">
         <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{t('template.field_label')}</label>
-        <input type="text" required placeholder="Contoh: Nominal Biaya" 
+        <input type="text" required placeholder="Example: Fee Amount" 
           value={field.label} onChange={(e) => onChange(field.id, 'label', e.target.value)}
           className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm" />
       </div>
       
       <div className="w-full md:w-1/4">
         <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{t('template.field_key')}</label>
-        <input type="text" required placeholder="nominal_biaya" 
+        <input type="text" required placeholder="fee_amount" 
           value={field.key} onChange={(e) => onChange(field.id, 'key', e.target.value)}
           className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm font-mono bg-gray-50" />
       </div>
@@ -32,11 +32,11 @@ export default function FieldItem({ field, onChange, onRemove, canRemove }) {
         <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{t('template.field_type')}</label>
         <select value={field.type} onChange={(e) => onChange(field.id, 'type', e.target.value)}
           className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm cursor-pointer bg-white">
-          <option value="text">Teks Pendek (Text)</option>
-          <option value="textarea">Teks Panjang (Textarea)</option>
-          <option value="number">Angka (Number)</option>
-          <option value="date">Tanggal (Date)</option>
-          <option value="file">Unggah File (File)</option>
+          <option value="text">Short Text (Text)</option>
+          <option value="textarea">Long Text (Textarea)</option>
+          <option value="number">Number</option>
+          <option value="date">Date</option>
+          <option value="file">File Upload (File)</option>
         </select>
       </div>
       

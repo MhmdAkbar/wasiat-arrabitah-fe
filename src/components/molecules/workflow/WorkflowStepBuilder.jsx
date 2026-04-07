@@ -6,7 +6,7 @@ export default function WorkflowStepBuilder({ approverRoles, onAdd, onRemove, on
 
   return (
     <div className="space-y-3 relative">
-      {/* Garis vertikal penghubung (UI Connector) */}
+      {/* Vertical connector line (UI Connector) */}
       <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-gray-200 -z-10"></div>
 
       {approverRoles.map((item, index) => (

@@ -1,59 +1,74 @@
 import { NavLink } from "react-router-dom";
 
-export default function Sidebar() {
-  // Helper function agar kode lebih bersih
+// Terima state isOpen dan fungsi closeSidebar
+export default function Sidebar({ isOpen, closeSidebar }) {
+  
   const getLinkStyle = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg transition font-medium border-l-4 ${
+    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium border-l-4 ${
       isActive
-        ? "bg-mosque-primary/50 text-white border-mosque-gold shadow-sm" // Style saat Aktif
-        : "text-gray-300 hover:bg-white/10 hover:text-white border-transparent" // Style saat Biasa
+        ? "bg-mosque-primary/50 text-white border-mosque-gold shadow-sm"
+        : "text-gray-300 hover:bg-white/10 hover:text-white border-transparent"
     }`;
 
   return (
-    <aside className="w-full md:w-64 bg-mosque-dark text-white flex flex-col shadow-xl z-10 relative shrink-0">
+    <aside 
+      className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-mosque-dark text-white flex flex-col shadow-xl shrink-0
+        transform transition-transform duration-300 ease-in-out will-change-transform
+        md:relative md:translate-x-0
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
+    >
       <div className="absolute right-0 top-0 w-1 h-full bg-mosque-gold"></div>
 
-      <div className="p-6 flex items-center gap-3 border-b border-white/10">
-        <i className="fa-solid fa-mosque text-mosque-gold text-2xl"></i>
-        <div>
-          <h2 className="text-lg font-bold tracking-wider leading-tight">
-            BPM
-          </h2>
-          <p className="text-xs text-mosque-gold font-medium">Ar-Rabitah</p>
+      {/* Header Sidebar & Tombol Close (Mobile) */}
+      <div className="p-6 flex justify-between items-center border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <i className="fa-solid fa-mosque text-mosque-gold text-2xl"></i>
+          <div>
+            <h2 className="text-lg font-bold tracking-wider leading-tight">BPM</h2>
+            <p className="text-xs text-mosque-gold font-medium">Ar-Rabitah</p>
+          </div>
         </div>
+        
+        {/* Tombol X dengan efek rotasi smooth */}
+        <button 
+          onClick={closeSidebar}
+          className="md:hidden text-gray-400 hover:text-white transition-all duration-200 hover:rotate-90 active:scale-90"
+        >
+          <i className="fa-solid fa-xmark text-2xl"></i>
+        </button>
       </div>
 
-      <nav className="mt-6 flex-1 flex flex-col gap-1 px-3">
+      {/* Menu Navigasi */}
+      <nav className="mt-6 flex-1 flex flex-col gap-1 px-3 overflow-y-auto">
         <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-          Menu Utama
+          Main Menu
         </p>
 
-        <NavLink to="/dashboard" className={getLinkStyle}>
+        <NavLink to="/dashboard" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-house w-5 text-center"></i>
           Dashboard
         </NavLink>
 
-        <NavLink to="/templates" className={getLinkStyle}>
+        <NavLink to="/templates" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-file-invoice w-5 text-center"></i>
-          Manajemen Template
+          Template Management
         </NavLink>
 
-        <NavLink to="/submissions/new" className={getLinkStyle}>
+        <NavLink to="/submissions/new" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-folder-open w-5 text-center"></i>
-          Pengajuan Dokumen
+          Document Submission
         </NavLink>
 
-        <NavLink to="/submissions/my" className={getLinkStyle}>
+        <NavLink to="/submissions/my" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-clock-rotate-left w-5 text-center"></i>
-          Riwayat Pengajuan
+          Submission History
         </NavLink>
 
-        <NavLink
-          to="/submissions/tasks"
-          className="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-lg transition text-gray-300 hover:text-white border-l-4 border-transparent"
-        >
+        <NavLink to="/submissions/tasks" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-inbox w-5 text-center"></i>
-          Tugas Persetujuan
+          Approval Tasks
         </NavLink>
       </nav>
 
