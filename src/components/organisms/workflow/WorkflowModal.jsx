@@ -12,7 +12,7 @@ export default function WorkflowModal({
 }) {
   const { t } = useTranslation();
 
-  // Panggil semua logika dan state dari Custom Hook
+  // Call all logic and state from Custom Hook
   const {
     approverRoles,
     formError,
@@ -27,7 +27,7 @@ export default function WorkflowModal({
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg border-t-4 border-mosque-gold overflow-hidden">
-        {/* Header Modal */}
+        {/* Modal Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
           <div>
             <h3 className="text-lg font-bold text-mosque-dark flex items-center gap-2">
@@ -59,13 +59,13 @@ export default function WorkflowModal({
             </div>
           )}
 
-          {/* State Loading (saat fetching data awal) */}
+          {/* Loading State (during initial data fetching) */}
           {loadingWorkflow ? (
             <div className="text-center py-4">
               <i className="fa-solid fa-spinner fa-spin text-mosque-primary text-2xl"></i>
             </div>
           ) : (
-            /* Workflow Builder Builder Component */
+            /* Workflow Builder Component */
             <WorkflowStepBuilder
               approverRoles={approverRoles}
               onAdd={handleAddStep}
@@ -74,7 +74,7 @@ export default function WorkflowModal({
             />
           )}
 
-          {/* Footer Modal */}
+          {/* Modal Footer */}
           <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-100">
             <button
               type="button"

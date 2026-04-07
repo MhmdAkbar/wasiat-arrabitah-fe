@@ -4,7 +4,7 @@ import { useDashboard } from "../../hooks/dashboard/useDashboard"; // Import Cus
 export default function Dashboard() {
   const { t } = useTranslation();
 
-  // Ambil state dan fungsi dari hook
+  // Get state and functions from the hook
   const { apiResponse, loading, handleTestAccess } = useDashboard();
 
   return (

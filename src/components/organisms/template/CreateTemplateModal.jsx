@@ -29,7 +29,7 @@ export default function CreateTemplateModal({
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden border-t-4 border-mosque-gold">
-        {/* Header Modal */}
+        {/* Modal Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 shrink-0">
           <h3 className="text-lg font-bold text-mosque-dark">
             {t("template.add_btn")}
@@ -72,7 +72,7 @@ export default function CreateTemplateModal({
             />
           </div>
 
-          {/* Footer Modal */}
+          {/* Modal Footer */}
           <div className="flex justify-end gap-3 p-4 border-t border-gray-100 bg-white shrink-0">
             <button
               type="button"
