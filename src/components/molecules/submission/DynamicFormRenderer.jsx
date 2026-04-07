@@ -3,7 +3,9 @@ export default function DynamicFormRenderer({ fields, formData, onChange }) {
 
   return (
     <div className="space-y-4 bg-gray-50 p-5 rounded-xl border border-gray-200">
-      <h4 className="text-sm font-bold text-gray-700 mb-4 border-b pb-2"><i className="fa-solid fa-file-pen"></i> Detail Formulir</h4>
+      <h4 className="text-sm font-bold text-gray-700 mb-4 border-b pb-2">
+        <i className="fa-solid fa-file-pen"></i> Form Details
+      </h4>
       
       {fields.map((field) => (
         <div key={field.key}>

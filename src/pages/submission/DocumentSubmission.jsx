@@ -33,7 +33,7 @@ export default function DocumentSubmission() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Dropdown Pemilihan Template */}
+          {/* Template Selection Dropdown */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               {t("submission.select_template")}
@@ -55,13 +55,13 @@ export default function DocumentSubmission() {
             </select>
             {loading && (
               <p className="text-xs text-gray-500 mt-1">
-                <i className="fa-solid fa-spinner fa-spin"></i> Memuat
+                <i className="fa-solid fa-spinner fa-spin"></i> Loading
                 template...
               </p>
             )}
           </div>
 
-          {/* Munculkan form detail hanya jika template sudah dipilih */}
+          {/* Show detail form only if a template is selected */}
           {selectedTemplate && (
             <div className="animate-fade-in space-y-6">
               <div>
@@ -72,14 +72,14 @@ export default function DocumentSubmission() {
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: Pengajuan Biaya Server Bulan April"
+                  placeholder="Example: April Server Cost Request"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mosque-primary outline-none"
                 />
               </div>
 
-              {/* RENDER FORM DINAMIS BERDASARKAN JSON SCHEMA */}
+              {/* RENDER DYNAMIC FORM BASED ON JSON SCHEMA */}
               <DynamicFormRenderer
                 fields={selectedTemplate.schemaDefinition.fields}
                 formData={formData}
