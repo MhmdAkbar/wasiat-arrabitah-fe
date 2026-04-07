@@ -34,7 +34,11 @@ export default function FieldItem({ field, onChange, onRemove, canRemove }) {
           className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm cursor-pointer bg-white">
           <option value="text">Short Text (Text)</option>
           <option value="textarea">Long Text (Textarea)</option>
-          <option value="number">Number</option>
+          
+          {/* PERUBAHAN DI SINI: Label diperjelas dan Opsi Currency ditambahkan */}
+          <option value="number">Number (Quantity)</option>
+          <option value="currency">Currency (SGD)</option>
+          
           <option value="date">Date</option>
           <option value="file">File Upload (File)</option>
         </select>
