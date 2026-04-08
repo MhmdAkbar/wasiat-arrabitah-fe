@@ -1,29 +1,46 @@
-import { useState } from 'react';
-import { api } from '@/utils/api'; // <-- Import Pintu Gerbang Kita
+import { useState, useEffect, useCallback } from 'react';
+import { api } from '@/utils/api'; 
 
 export const useDashboard = () => {
-  const [apiResponse, setApiResponse] = useState('');
+  const [recentDocs, setRecentDocs] = useState([]);
+  const [stats, setStats] = useState({ total: 0, pending: 0, approved: 0 });
   const [loading, setLoading] = useState(false);
+  
+  const role = localStorage.getItem('userRole');
+  const userName = localStorage.getItem('userName');
 
-  const handleTestAccess = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
-    setApiResponse('> Menghubungi Server...\n');
-
     try {
-      // SANGAT BERSIH! Tidak perlu pusing mikirin URL, Token, Headers, atau cek 401 lagi!
-      const data = await api('/api/auth/me', { method: 'GET' });
-      
-      setApiResponse(`> Status: 200 OK\n\n${JSON.stringify(data, null, 2)}`);
+      let result;
+      // SMART LOGIC: Admin/Director fetch from Global (/all), the rest fetch from Personal (/my)
+      if (role === 'admin' || role === 'director') {
+        result = await api('/api/submissions/all?limit=5'); // Fetch only 5 latest for dashboard
+      } else {
+        result = await api('/api/submissions/my');
+      }
+
+      if (result.success) {
+        const data = role === 'admin' || role === 'director' ? result.data : result.data.slice(0, 5);
+        setRecentDocs(data);
+
+        // Simulate simple statistics calculation from the fetched data
+        const total = result.meta ? result.meta.totalItems : result.data.length;
+        const pending = result.data.filter(d => d.status === 'submitted' || d.status === 'in_progress').length;
+        const approved = result.data.filter(d => d.status === 'approved').length;
+        
+        setStats({ total, pending, approved });
+      }
     } catch (error) {
-      setApiResponse(`> Error:\n${error.message}`);
+      console.error("Failed to load dashboard data", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [role]);
 
-  return {
-    apiResponse,
-    loading,
-    handleTestAccess
-  };
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+
+  return { recentDocs, stats, loading, role, userName };
 };
