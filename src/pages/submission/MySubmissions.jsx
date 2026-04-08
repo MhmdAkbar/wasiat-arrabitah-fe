@@ -12,7 +12,8 @@ export default function MySubmissions() {
     detailLoading, 
     fetchDetail, 
     clearDetail,
-    cancelSubmission // Destructure the cancel function from the hook
+    cancelSubmission, // Destructure the cancel function from the hook
+    resubmitSubmission
   } = useMySubmissions();
 
   return (
@@ -100,7 +101,9 @@ export default function MySubmissions() {
         onClose={clearDetail} 
         detailData={detailData} 
         loading={detailLoading} 
-        cancelSubmission={cancelSubmission} // Pass the cancel function to the modal
+        cancelSubmission={cancelSubmission}
+        resubmitSubmission={resubmitSubmission} // 'resubmitSubmission' is not defined
+        fetchDetail={fetchDetail} // <--- TAMBAHKAN BARIS INI
       />
     </div>
   );
