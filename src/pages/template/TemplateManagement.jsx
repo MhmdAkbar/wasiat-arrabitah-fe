@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-hot-toast";
 import { useTemplates } from "../../hooks/template/useTemplates";
 import { useWorkflow } from "../../hooks/workflow/useWorkflow";
 
-// Import komponen modal yang baru saja dibuat
+// Import recently created modal components
 import CreateTemplateModal from "../../components/organisms/template/CreateTemplateModal";
 import WorkflowModal from "../../components/organisms/workflow/WorkflowModal";
 
@@ -16,7 +17,9 @@ export default function TemplateManagement() {
     loading: loadingTemplates,
     error,
     createTemplate,
+   executeDeleteTemplate // 1. Ensure deleteTemplate is destructured from the hook
   } = useTemplates();
+  
   const {
     loading: loadingWorkflow,
     getWorkflow,
@@ -25,16 +28,46 @@ export default function TemplateManagement() {
 
   // States
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTemplateForWorkflow, setSelectedTemplateForWorkflow] =
-    useState(null);
+  const [selectedTemplateForWorkflow, setSelectedTemplateForWorkflow] = useState(null);
 
   // Role Check
   const userRole = localStorage.getItem("userRole");
   const isAdmin = userRole === "admin";
 
+  // --- CONFIRMATION UI LOGIC ---
+  const confirmDelete = (id, templateName) => {
+    toast(
+      (t) => (
+        <div>
+          <p className="text-sm font-bold text-gray-800 mb-3">
+            Are you sure you want to delete the template <b>{templateName}</b>?
+          </p>
+          <div className="flex gap-2 justify-end">
+            <button 
+              onClick={() => toast.dismiss(t.id)} 
+              className="px-3 py-1.5 text-xs font-bold text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={async () => {
+                toast.dismiss(t.id); // Close confirmation toast
+                await executeDeleteTemplate(id); // Call API logic from hook
+              }} 
+              className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 rounded hover:bg-red-700 transition"
+            >
+              Yes, Delete
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header Halaman */}
+      {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
@@ -58,7 +91,7 @@ export default function TemplateManagement() {
         </div>
       )}
 
-      {/* Tabel Data */}
+      {/* Data Table */}
       <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -74,7 +107,7 @@ export default function TemplateManagement() {
                   {t("template.status")}
                 </th>
                 <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">
-                  action
+                  Action
                 </th>
               </tr>
             </thead>
@@ -114,15 +147,29 @@ export default function TemplateManagement() {
                         {tpl.isActive ? t("template.active") : "Inactive"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-right">
+                    
+                    {/* Action Column */}
+                    <td className="px-6 py-4 text-sm text-right flex items-center justify-end gap-2">
                       {isAdmin && (
-                        <button
-                          onClick={() => setSelectedTemplateForWorkflow(tpl)}
-                          className="px-3 py-1.5 bg-mosque-light text-mosque-primary hover:bg-mosque-primary hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5 ml-auto"
-                        >
-                          <i className="fa-solid fa-sitemap"></i>{" "}
-                          {t("template.workflow_btn")}
-                        </button>
+                        <>
+                          {/* Setup Workflow Button */}
+                          <button
+                            onClick={() => setSelectedTemplateForWorkflow(tpl)}
+                            className="px-3 py-1.5 bg-mosque-light text-mosque-primary hover:bg-mosque-primary hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5"
+                          >
+                            <i className="fa-solid fa-sitemap"></i>{" "}
+                            {t("template.workflow_btn")}
+                          </button>
+                          
+                          {/* Delete Button (Triggers Confirmation) */}
+                          <button 
+                            onClick={() => confirmDelete(tpl.id, tpl.name)}
+                            className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5 border border-red-100 hover:border-red-600"
+                            title="Delete Template"
+                          >
+                            <i className="fa-solid fa-trash-can"></i> Delete
+                          </button>
+                        </>
                       )}
                     </td>
                   </tr>
@@ -133,7 +180,7 @@ export default function TemplateManagement() {
         </div>
       </div>
 
-      {/* Render Modal Komponen */}
+      {/* Render Modal Components */}
       <CreateTemplateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

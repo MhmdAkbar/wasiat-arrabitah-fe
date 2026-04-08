@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { api } from '@/utils/api'; // <-- Import API Wrapper
-import toast from 'react-hot-toast';
+import { api } from '@/utils/api'; 
+import { toast } from 'react-hot-toast'; 
 
 export const useTemplates = () => {
   const [templates, setTemplates] = useState([]);
@@ -11,10 +11,7 @@ export const useTemplates = () => {
     setLoading(true);
     try {
       const result = await api('/api/templates', { method: 'GET' });
-      
-      if (result.success) {
-        setTemplates(result.data);
-      }
+      if (result.success) setTemplates(result.data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -33,7 +30,7 @@ export const useTemplates = () => {
         body: JSON.stringify({
           code: templateData.code,
           name: templateData.name,
-          schemaDefinition: templateData.schemaDefinition // Langsung kirim objeknya!
+          schemaDefinition: templateData.schemaDefinition
         })
       });
 
@@ -48,5 +45,28 @@ export const useTemplates = () => {
     }
   };
 
-  return { templates, loading, error, createTemplate, refresh: fetchTemplates };
+  // --- BERSIH DARI JSX: HANYA LOGIKA EKSEKUSI API ---
+  const executeDeleteTemplate = async (id) => {
+    const tid = toast.loading('Memproses penghapusan...');
+    try {
+      const result = await api(`/api/templates/${id}`, { method: 'DELETE' });
+      if (result.success) {
+        toast.success(result.message, { id: tid, duration: 4000 });
+        fetchTemplates(); // Refresh data
+        return true;
+      }
+    } catch (err) {
+      toast.error(`Gagal menghapus: ${err.message}`, { id: tid });
+      return false;
+    }
+  };
+
+  return { 
+    templates, 
+    loading, 
+    error, 
+    createTemplate, 
+    executeDeleteTemplate, // <-- Ekspor fungsi ini
+    refresh: fetchTemplates 
+  };
 };
