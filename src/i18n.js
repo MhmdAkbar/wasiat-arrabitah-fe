@@ -5,7 +5,7 @@ const resources = {
   en: {
     translation: {
       "app_name": "BPM Digital",
-      "mosque_name": "Ar-Rabitah Mosque",
+      "mosque_name": "Hayba",
       "auth": {
         "email": "Email Address",
         "password": "Password",
@@ -99,7 +99,7 @@ const resources = {
   id: {
     translation: {
       "app_name": "BPM Digital",
-      "mosque_name": "Masjid Ar-Rabitah",
+      "mosque_name": "Hayba",
       "auth": {
         "email": "Alamat Email",
         "password": "Kata Sandi",

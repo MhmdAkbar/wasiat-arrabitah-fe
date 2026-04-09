@@ -27,7 +27,7 @@ export default function Sidebar({ isOpen, closeSidebar }) {
           <i className="fa-solid fa-mosque text-mosque-gold text-2xl"></i>
           <div>
             <h2 className="text-lg font-bold tracking-wider leading-tight">BPM</h2>
-            <p className="text-xs text-mosque-gold font-medium">Ar-Rabitah</p>
+            <p className="text-xs text-mosque-gold font-medium">Hayba</p>
           </div>
         </div>
         
@@ -73,7 +73,7 @@ export default function Sidebar({ isOpen, closeSidebar }) {
       </nav>
 
       <div className="p-4 border-t border-white/10 text-xs text-center text-gray-400">
-        &copy; 2026 DKM Ar-Rabitah
+        &copy; 2026 Hayba
       </div>
     </aside>
   );
