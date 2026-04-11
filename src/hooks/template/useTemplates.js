@@ -56,7 +56,7 @@ export const useTemplates = () => {
         return true;
       }
     } catch (err) {
-      toast.error(`Gagal menghapus: ${err.message}`, { id: tid });
+      toast.error(`failed to delete : ${err.message}`, { id: tid });
       return false;
     }
   };

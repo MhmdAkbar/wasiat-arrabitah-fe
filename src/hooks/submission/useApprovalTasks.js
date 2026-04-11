@@ -3,7 +3,7 @@ import { api } from "@/utils/api";
 import toast from "react-hot-toast";
 
 export const useApprovalTasks = () => {
-  // Perbaikan: Tambahkan nama variabel pada useState
+  // Fix: Added variable names to useState
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,8 +36,8 @@ export const useApprovalTasks = () => {
   };
 
   const processApproval = async (approvalId, action, comments, signatureFile) => {
-    // Logika murni API
-    const tid = toast.loading("Memproses...");
+    // Pure API logic
+    const tid = toast.loading("Processing...");
     try {
       const formData = new FormData();
       formData.append("action", action);
@@ -50,20 +50,20 @@ export const useApprovalTasks = () => {
       });
 
       if (result.success) {
-        toast.success("Berhasil diproses!", { id: tid });
+        toast.success("Processed successfully!", { id: tid });
         setDetailData(null);
         fetchTasks();
         return true;
       }
     } catch (err) {
-      toast.error(`Gagal: ${err.message}`, { id: tid });
+      toast.error(`Failed: ${err.message}`, { id: tid });
       return false;
     }
   };
 
   useEffect(() => {
     fetchTasks();
-  }, [fetchTasks]); // Tambahkan dependency
+  }, [fetchTasks]); // Added dependency
 
   return {
     tasks,

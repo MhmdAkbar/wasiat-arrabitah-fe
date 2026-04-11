@@ -34,7 +34,7 @@ export const api = async (endpoint, options = {}) => {
 
   // JIKA RESPONSE ADALAH FILE PDF (Untuk fitur Cetak Dokumen)
   if (contentType && contentType.includes('application/pdf')) {
-    if (!response.ok) throw new Error('Gagal mengunduh dokumen PDF.');
+    if (!response.ok) throw new Error('Failed to download PDF documents.');
     return await response.blob(); 
   }
 
