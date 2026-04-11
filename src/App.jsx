@@ -8,6 +8,7 @@ import TemplateManagement from "./pages/template/TemplateManagement";
 import DocumentSubmission from "@/pages/submission/DocumentSubmission";
 import MySubmissions from "./pages/submission/MySubmissions";
 import ApprovalTasks from "./pages/submission/ApprovalTasks";
+import MyProfile from "./pages/dashboard/MyProfile";
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
 
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/templates" element={<TemplateManagement />} />
           <Route path="/submissions/new" element={<DocumentSubmission />} />
           <Route path="/submissions/my" element={<MySubmissions />} />

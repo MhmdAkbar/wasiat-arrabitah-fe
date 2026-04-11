@@ -35,18 +35,25 @@ export const useApprovalTasks = () => {
     }
   };
 
-  const processApproval = async (approvalId, action, comments, signatureFile) => {
-    // Pure API logic
+  // --- FITUR BARU: PROSES APPROVAL DENGAN JSON BASE64 ---
+  const processApproval = async (
+    approvalId,
+    action,
+    comments,
+    signatureBase64,
+  ) => {
     const tid = toast.loading("Processing...");
     try {
-      const formData = new FormData();
-      formData.append("action", action);
-      if (comments) formData.append("comments", comments);
-      if (signatureFile) formData.append("signature", signatureFile);
+      // PERBAIKAN: Payload lengkap. signatureBase64 akan dikirim sebagai 'null' jika kosong.
+      const payload = {
+        action,
+        comments,
+        signatureBase64: signatureBase64 || null,
+      };
 
       const result = await api(`/api/approvals/${approvalId}`, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(payload),
       });
 
       if (result.success) {
@@ -56,7 +63,11 @@ export const useApprovalTasks = () => {
         return true;
       }
     } catch (err) {
-      toast.error(`Failed: ${err.message}`, { id: tid });
+      // Jika Backend melempar error "Signature is required...", akan ditangkap dan ditampilkan di sini
+      toast.error(err.message || "Failed to process!", {
+        id: tid,
+        duration: 5000,
+      });
       return false;
     }
   };

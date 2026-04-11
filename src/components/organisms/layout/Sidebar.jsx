@@ -51,6 +51,11 @@ export default function Sidebar({ isOpen, closeSidebar }) {
           Dashboard
         </NavLink>
 
+        <NavLink to="/my-profile" onClick={closeSidebar} className={getLinkStyle}>
+          <i className="fa-solid fa-house w-5 text-center"></i>
+          My Profile
+        </NavLink>
+
         <NavLink to="/templates" onClick={closeSidebar} className={getLinkStyle}>
           <i className="fa-solid fa-file-invoice w-5 text-center"></i>
           Template Management
