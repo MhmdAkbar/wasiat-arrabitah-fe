@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 
 // Terima state isOpen dan fungsi closeSidebar
 export default function Sidebar({ isOpen, closeSidebar }) {
-  
   const getLinkStyle = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium border-l-4 ${
       isActive
@@ -11,7 +10,7 @@ export default function Sidebar({ isOpen, closeSidebar }) {
     }`;
 
   return (
-    <aside 
+    <aside
       className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-mosque-dark text-white flex flex-col shadow-xl shrink-0
         transform transition-transform duration-300 ease-in-out will-change-transform
@@ -26,13 +25,15 @@ export default function Sidebar({ isOpen, closeSidebar }) {
         <div className="flex items-center gap-3">
           <i className="fa-solid fa-mosque text-mosque-gold text-2xl"></i>
           <div>
-            <h2 className="text-lg font-bold tracking-wider leading-tight">BPM</h2>
+            <h2 className="text-lg font-bold tracking-wider leading-tight">
+              BPM
+            </h2>
             <p className="text-xs text-mosque-gold font-medium">Hayba</p>
           </div>
         </div>
-        
+
         {/* Tombol X dengan efek rotasi smooth */}
-        <button 
+        <button
           onClick={closeSidebar}
           className="md:hidden text-gray-400 hover:text-white transition-all duration-200 hover:rotate-90 active:scale-90"
         >
@@ -46,32 +47,47 @@ export default function Sidebar({ isOpen, closeSidebar }) {
           Main Menu
         </p>
 
-        <NavLink to="/dashboard" onClick={closeSidebar} className={getLinkStyle}>
+        <NavLink
+          to="/dashboard"
+          onClick={closeSidebar}
+          className={getLinkStyle}
+        >
           <i className="fa-solid fa-house w-5 text-center"></i>
           Dashboard
         </NavLink>
 
-        <NavLink to="/my-profile" onClick={closeSidebar} className={getLinkStyle}>
-          <i className="fa-solid fa-house w-5 text-center"></i>
-          My Profile
-        </NavLink>
-
-        <NavLink to="/templates" onClick={closeSidebar} className={getLinkStyle}>
+        <NavLink
+          to="/templates"
+          onClick={closeSidebar}
+          className={getLinkStyle}
+        >
           <i className="fa-solid fa-file-invoice w-5 text-center"></i>
           Template Management
         </NavLink>
 
-        <NavLink to="/submissions/new" onClick={closeSidebar} className={getLinkStyle}>
+        <NavLink
+          to="/submissions/new"
+          onClick={closeSidebar}
+          className={getLinkStyle}
+        >
           <i className="fa-solid fa-folder-open w-5 text-center"></i>
           Document Submission
         </NavLink>
 
-        <NavLink to="/submissions/my" onClick={closeSidebar} className={getLinkStyle}>
+        <NavLink
+          to="/submissions/my"
+          onClick={closeSidebar}
+          className={getLinkStyle}
+        >
           <i className="fa-solid fa-clock-rotate-left w-5 text-center"></i>
           Submission History
         </NavLink>
 
-        <NavLink to="/submissions/tasks" onClick={closeSidebar} className={getLinkStyle}>
+        <NavLink
+          to="/submissions/tasks"
+          onClick={closeSidebar}
+          className={getLinkStyle}
+        >
           <i className="fa-solid fa-inbox w-5 text-center"></i>
           Approval Tasks
         </NavLink>
