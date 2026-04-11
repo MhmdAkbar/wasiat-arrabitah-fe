@@ -5,20 +5,21 @@ export const useCreateTemplateForm = (createTemplate, onClose) => {
   const [name, setName] = useState('');
   const [formError, setFormError] = useState('');
   
-  // Use UUID for React Key to prevent reconciliation issues when adding/removing
+  // Use UUID for React Key to prevent reconciliation issues when adding/removing.
+  // Add 'format: decimal' as the default for new fields.
   const [fields, setFields] = useState([
-    { id: crypto.randomUUID(), key: 'purpose_title', label: 'Purpose Title', type: 'text', required: true, isKeyEdited: false }
+    { id: crypto.randomUUID(), key: 'purpose', label: 'purpose title', type: 'text', format: 'decimal', required: true, isKeyEdited: false }
   ]);
 
   const resetForm = () => {
     setCode('');
     setName('');
     setFormError('');
-    setFields([{ id: crypto.randomUUID(), key: 'purpose_title', label: 'Purpose Title', type: 'text', required: true, isKeyEdited: false }]);
+    setFields([{ id: crypto.randomUUID(), key: 'purpose', label: 'purpose title', type: 'text', format: 'decimal', required: true, isKeyEdited: false }]);
   };
 
   const handleAddField = () => {
-    setFields([...fields, { id: crypto.randomUUID(), key: '', label: '', type: 'text', required: true, isKeyEdited: false }]);
+    setFields([...fields, { id: crypto.randomUUID(), key: '', label: '', type: 'text', format: 'decimal', required: true, isKeyEdited: false }]);
   };
 
   const handleRemoveField = (id) => {
@@ -70,7 +71,14 @@ export const useCreateTemplateForm = (createTemplate, onClose) => {
       name,
       schemaDefinition: { 
         version: "1.0", 
-        fields: fields.map(f => ({ key: f.key, label: f.label, type: f.type, required: f.required })) 
+        // ENSURE FORMAT IS SENT TO BACKEND
+        fields: fields.map(f => ({ 
+          key: f.key, 
+          label: f.label, 
+          type: f.type, 
+          format: f.type === 'number' ? f.format : undefined, // Only send format if the type is 'number'
+          required: f.required 
+        })) 
       }
     };
 

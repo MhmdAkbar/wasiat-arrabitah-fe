@@ -28,20 +28,33 @@ export default function FieldItem({ field, onChange, onRemove, canRemove }) {
           className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm font-mono bg-gray-50" />
       </div>
       
-      <div className="w-full md:w-1/4">
-        <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{t('template.field_type')}</label>
-        <select value={field.type} onChange={(e) => onChange(field.id, 'type', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm cursor-pointer bg-white">
-          <option value="text">Short Text (Text)</option>
-          <option value="textarea">Long Text (Textarea)</option>
-          
-          {/* PERUBAHAN DI SINI: Label diperjelas dan Opsi Currency ditambahkan */}
-          <option value="number">Number (Quantity)</option>
-          <option value="currency">Currency (SGD)</option>
-          
-          <option value="date">Date</option>
-          <option value="file">File Upload (File)</option>
-        </select>
+      {/* DATA TYPE & FORMAT AREA */}
+      <div className="w-full md:w-1/4 flex flex-col gap-2">
+        <div>
+          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{t('template.field_type')}</label>
+          <select value={field.type} onChange={(e) => onChange(field.id, 'type', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-mosque-primary outline-none text-sm cursor-pointer bg-white">
+            <option value="text">Short Text (Text)</option>
+            <option value="textarea">Long Text (Textarea)</option>
+            <option value="number">Number (Quantity/Currency)</option>
+            <option value="date">Date</option>
+            <option value="file">File Upload (File)</option>
+          </select>
+        </div>
+
+        {/* AUTO-APPEARS IF TYPE = NUMBER */}
+        {field.type === 'number' && (
+          <div className="animate-fade-in">
+             <select 
+              value={field.format || 'decimal'}
+              onChange={(e) => onChange(field.id, 'format', e.target.value)}
+              className="w-full px-3 py-1.5 border rounded-md text-xs bg-blue-50 border-blue-200 text-blue-700 font-semibold focus:ring-1 focus:ring-blue-500 outline-none cursor-pointer"
+            >
+              <option value="decimal">Format: Standard Number (Qty)</option>
+              <option value="currency">Format: Currency (SGD)</option>
+            </select>
+          </div>
+        )}
       </div>
       
       <div className="w-full md:w-[15%] flex flex-col justify-center pt-5">
