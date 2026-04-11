@@ -84,10 +84,12 @@ export const useDocumentDetailModal = ({ isOpen, detailData, fetchDetail, resubm
     }
   };
 
-  // Pure Logic Eksekusi Approve (Tanpa Konfirmasi UI)
-  const executeApprovalAction = async (approvalId, action) => {
+ // Pure Logic Eksekusi Approve
+  const executeApprovalAction = async (approvalId, action, finalSignatureOverride = null) => {
     if (processApproval) {
-      await processApproval(approvalId, action, comments, signatureFile);
+      // Gunakan finalSignatureOverride jika ada (dari Canvas), jika tidak gunakan state signatureFile
+      const fileToSubmit = finalSignatureOverride || signatureFile;
+      await processApproval(approvalId, action, comments, fileToSubmit);
     }
   };
 

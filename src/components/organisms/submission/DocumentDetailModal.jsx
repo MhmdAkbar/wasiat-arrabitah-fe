@@ -81,6 +81,7 @@ export default function DocumentDetailModal(props) {
                 <DocumentApprovalBox
                   comments={state.comments}
                   setComments={state.setComments}
+                  signatureFile={state.signatureFile}
                   setSignatureFile={state.setSignatureFile}
                   executeApprovalAction={
                     state.executeApprovalAction
