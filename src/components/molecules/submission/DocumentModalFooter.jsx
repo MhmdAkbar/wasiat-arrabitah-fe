@@ -1,3 +1,4 @@
+// src/components/molecules/submission/DocumentModalFooter.jsx
 //src/components/molecules/submission/DocumentModalFooter.jsx
 
 export default function DocumentModalFooter({ isEditing, setIsEditing, handleSaveRevision, loading, detailData, cancelSubmission, onClose }) {

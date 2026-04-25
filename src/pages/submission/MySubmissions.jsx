@@ -1,3 +1,4 @@
+// src/pages/submission/MySubmissions.jsx
 import { useTranslation } from 'react-i18next';
 import { useMySubmissions } from '../../hooks/submission/useMySubmissions';
 import DocumentDetailModal from '../../components/organisms/submission/DocumentDetailModal';

@@ -1,3 +1,4 @@
+// src/pages/dashboard/Dashboard.jsx
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom"; // <-- Added Link
 import { useDashboard } from "../../hooks/dashboard/useDashboard"; 

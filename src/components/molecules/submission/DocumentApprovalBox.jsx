@@ -1,3 +1,4 @@
+// src/components/molecules/submission/DocumentApprovalBox.jsx
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";

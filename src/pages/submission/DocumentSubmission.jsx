@@ -1,3 +1,4 @@
+// src/pages/submission/DocumentSubmission.jsx
 import { useTranslation } from "react-i18next";
 import { useDocumentSubmission } from "../../hooks/submission/useDocumentSubmission";
 import DynamicFormRenderer from "../../components/molecules/submission/DynamicFormRenderer";

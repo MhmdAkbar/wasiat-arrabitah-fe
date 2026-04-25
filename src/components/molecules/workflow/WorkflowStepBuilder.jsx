@@ -1,3 +1,4 @@
+// src/components/molecules/workflow/WorkflowStepBuilder.jsx
 import { useTranslation } from 'react-i18next';
 import WorkflowStepItem from './WorkflowStepItem';
 

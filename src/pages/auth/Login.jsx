@@ -1,3 +1,4 @@
+// src/pages/auth/Login.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -107,17 +108,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="mt-6 text-center border-t border-gray-100 pt-5">
-          <p className="text-sm text-gray-500">
-            {t("auth.no_account")}{" "}
-            <Link
-              to="/register"
-              className="text-mosque-gold font-semibold hover:underline"
-            >
-              {t("auth.register_btn")}
-            </Link>
-          </p>
-        </div>
+        
       </div>
     </div>
   );

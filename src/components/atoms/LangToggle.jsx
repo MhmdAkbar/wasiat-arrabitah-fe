@@ -1,3 +1,4 @@
+// src/components/atoms/LangToggle.jsx
 import { useTranslation } from 'react-i18next';
 
 export default function LangToggle() {

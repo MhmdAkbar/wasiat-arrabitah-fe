@@ -1,3 +1,4 @@
+// src/components/organisms/submission/DocumentDetailModal.jsx
 import { useDocumentDetailModal } from "../../../hooks/submission/useDocumentDetailModal";
 import DocumentModalHeader from "../../molecules/submission/DocumentModalHeader";
 import DocumentModalFooter from "../../molecules/submission/DocumentModalFooter";

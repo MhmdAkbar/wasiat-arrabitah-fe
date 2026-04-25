@@ -1,3 +1,4 @@
+// src/components/organisms/workflow/WorkflowModal.jsx
 import { useTranslation } from "react-i18next";
 import { useWorkflowForm } from "@/hooks/workflow/useWorkflowForm";
 import WorkflowStepBuilder from "@/components/molecules/workflow/WorkflowStepBuilder";

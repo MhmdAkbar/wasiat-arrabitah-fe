@@ -1,89 +1,98 @@
-import { useState } from "react"; // Tambahkan useState
-import { Link } from "react-router-dom";
+// src/pages/auth/Register.jsx
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import LangToggle from "../../components/atoms/LangToggle";
-import { useRegister } from "../../hooks/auth/useRegister";
+import { useRegister } from "@/hooks/auth/useRegister";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Register() {
   const { t } = useTranslation();
-
-  // State untuk kontrol mata password
+  const { user } = useAuth();
+  
+  // State for password visibility
   const [showPassword, setShowPassword] = useState(false);
 
-  // Destructuring semua state dan fungsi dari Custom Hook
+  // Destructure custom hook
   const {
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    department,
-    setDepartment,
-    role,
-    setRole,
-    loading,
-    error,
+    name, setName,
+    email, setEmail,
+    password, setPassword,
+    department, setDepartment,
+    role, setRole,
+    loading, error,
     handleRegister,
   } = useRegister();
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-pattern relative z-0 py-10">
-      <div className="absolute top-4 right-4 z-20">
-        <LangToggle />
+  // Double security: Prevent non-admins from even seeing the form
+  const isSuperAdmin = user?.role === "superadmin";
+  const isAdmin = user?.role === "admin";
+
+  if (!isAdmin && !isSuperAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <i className="fa-solid fa-lock text-5xl text-gray-300 mb-4"></i>
+        <h2 className="text-xl font-bold text-gray-700">Access Denied</h2>
+        <p className="text-gray-500 mt-2">You do not have permission to add new users.</p>
       </div>
-      <div className="bg-white p-10 rounded-2xl shadow-soft w-full max-w-md border-t-4 border-mosque-gold relative">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-mosque-dark">
-            {t("auth.register_title")}
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            {t("app_name")} - {t("mosque_name")}
-          </p>
-        </div>
+    );
+  }
 
-        <form onSubmit={handleRegister} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("auth.name")}
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="ex : John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("auth.email")}
-            </label>
-            <input
-              type="email"
-              required
-              placeholder="ridzwan@arrabitah.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm"
-            />
-          </div>
+  return (
+    <div className="max-w-3xl mx-auto space-y-6">
+      {/* Page Header */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-800">
+          Add New User
+        </h2>
+        <p className="text-sm text-gray-500">
+          Create a new account and assign roles/departments.
+        </p>
+      </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* ----- DROPDOWN DEPARTEMEN ----- */}
+      <div className="bg-white p-6 md:p-8 rounded-xl shadow-soft border border-gray-100">
+        <form onSubmit={handleRegister} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Name Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("auth.department")}
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                Full Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Budi Admin"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm transition-all"
+              />
+            </div>
+
+            {/* Email Input */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                Email Address <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="admin.budi@perusahaan.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm transition-all"
+              />
+            </div>
+
+            {/* Department Dropdown */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                Department
               </label>
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm cursor-pointer"
               >
-                <option value="" disabled>
-                  -- Pilih --
-                </option>
+                <option value="" disabled>-- Select Department --</option>
                 <option value="IT">IT</option>
                 <option value="HR">HR</option>
                 <option value="Finance">Finance</option>
@@ -92,10 +101,10 @@ export default function Register() {
               </select>
             </div>
 
-            {/* ----- DROPDOWN ROLE ----- */}
+            {/* Role Dropdown */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("auth.role") || "Role"}
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                Role <span className="text-red-500">*</span>
               </label>
               <select
                 value={role}
@@ -107,16 +116,18 @@ export default function Register() {
                 <option value="verifier">Verifier</option>
                 <option value="manager">Manager</option>
                 <option value="director">Director</option>
+                {/* Only Superadmin can create another admin or superadmin */}
                 <option value="admin">Admin</option>
+                {isSuperAdmin && <option value="superadmin">Superadmin</option>}
               </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("auth.password")}
+          {/* Password Input */}
+          <div className="max-w-md">
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Temporary Password <span className="text-red-500">*</span>
             </label>
-            {/* Wrapper relative untuk input dan tombol mata */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -124,58 +135,45 @@ export default function Register() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm pr-11"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-mosque-primary bg-gray-50 focus:bg-white text-sm pr-11 transition-all"
               />
-              
-              {/* Tombol dengan animasi smooth */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-mosque-primary focus:outline-none transition-colors duration-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-mosque-primary focus:outline-none"
               >
-                {/* Ikon Mata Terbuka */}
-                <i 
-                  className={`fa-solid fa-eye absolute transition-all duration-300 ease-in-out ${
-                    showPassword ? "opacity-0 scale-50 rotate-[-10deg]" : "opacity-100 scale-100 rotate-0"
-                  }`}
-                ></i>
-                
-                {/* Ikon Mata Tertutup */}
-                <i 
-                  className={`fa-solid fa-eye-slash absolute transition-all duration-300 ease-in-out ${
-                    showPassword ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 rotate-[10deg]"
-                  }`}
-                ></i>
+                <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
               </button>
             </div>
           </div>
 
+          {/* Error Message Display */}
           {error && (
-            <div className="text-red-500 text-sm bg-red-50 p-3 rounded-md border border-red-100">
-              {error}
+            <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 p-3.5 rounded-lg border border-red-100">
+              <i className="fa-solid fa-circle-exclamation"></i>
+              <span>{error}</span>
             </div>
           )}
 
-          <button
-            disabled={loading}
-            type="submit"
-            className="w-full py-3 mt-2 rounded-lg font-semibold text-white bg-mosque-dark hover:bg-mosque-primary transition disabled:opacity-70"
-          >
-            {loading ? t("auth.loading") : t("auth.register_btn")}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center border-t border-gray-100 pt-5">
-          <p className="text-sm text-gray-500">
-            {t("auth.have_account")}{" "}
-            <Link
-              to="/"
-              className="text-mosque-gold font-semibold hover:underline"
+          {/* Form Actions */}
+          <div className="pt-4 border-t border-gray-100 flex justify-end">
+            <button
+              disabled={loading}
+              type="submit"
+              className="px-6 py-2.5 rounded-lg font-bold text-white bg-mosque-dark hover:bg-mosque-primary transition-colors disabled:opacity-70 flex items-center gap-2"
             >
-              {t("auth.login_btn")}
-            </Link>
-          </p>
-        </div>
+              {loading ? (
+                <>
+                  <i className="fa-solid fa-spinner fa-spin"></i> Processing...
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-user-plus"></i> Create User
+                </>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

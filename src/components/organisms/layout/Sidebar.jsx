@@ -1,7 +1,14 @@
+// src/components/organisms/layout/Sidebar.jsx
 import { NavLink } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext"; // 1. Import Auth Context
 
-// Terima state isOpen dan fungsi closeSidebar
 export default function Sidebar({ isOpen, closeSidebar }) {
+  // 2. Ambil data user
+  const { user } = useAuth();
+  
+  // 3. Cek apakah user adalah admin atau superadmin
+  const isAdmin = user?.role === "admin" || user?.role === "superadmin";
+
   const getLinkStyle = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium border-l-4 ${
       isActive
@@ -55,6 +62,19 @@ export default function Sidebar({ isOpen, closeSidebar }) {
           <i className="fa-solid fa-house w-5 text-center"></i>
           Dashboard
         </NavLink>
+
+        {/* --- MENU KHUSUS ADMIN MULAI DARI SINI --- */}
+        {isAdmin && (
+          <NavLink
+            to="/register"
+            onClick={closeSidebar}
+            className={getLinkStyle}
+          >
+            <i className="fa-solid fa-user-plus w-5 text-center"></i>
+            Add New User
+          </NavLink>
+        )}
+        {/* --- MENU KHUSUS ADMIN SELESAI --- */}
 
         <NavLink
           to="/templates"

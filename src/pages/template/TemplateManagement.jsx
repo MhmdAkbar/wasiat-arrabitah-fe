@@ -1,15 +1,20 @@
+// src/pages/template/TemplateManagement.jsx
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
+
+// Hooks & Context
 import { useTemplates } from "../../hooks/template/useTemplates";
 import { useWorkflow } from "../../hooks/workflow/useWorkflow";
+import { useAuth } from "../../contexts/AuthContext";
 
-// Import recently created modal components
+// Modals
 import CreateTemplateModal from "../../components/organisms/template/CreateTemplateModal";
 import WorkflowModal from "../../components/organisms/workflow/WorkflowModal";
 
 export default function TemplateManagement() {
   const { t } = useTranslation();
+  const { user } = useAuth(); // Consume global state safely
 
   // Custom Hooks
   const {
@@ -17,7 +22,7 @@ export default function TemplateManagement() {
     loading: loadingTemplates,
     error,
     createTemplate,
-   executeDeleteTemplate // 1. Ensure deleteTemplate is destructured from the hook
+    executeDeleteTemplate 
   } = useTemplates();
   
   const {
@@ -30,11 +35,9 @@ export default function TemplateManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTemplateForWorkflow, setSelectedTemplateForWorkflow] = useState(null);
 
-  // Role Check
-  const userRole = localStorage.getItem("userRole");
-  const isAdmin = userRole === "admin";
+  // Secure role evaluation
+  const isAdmin = user?.role === "admin";
 
-  // --- CONFIRMATION UI LOGIC ---
   const confirmDelete = (id, templateName) => {
     toast(
       (t) => (
@@ -51,8 +54,8 @@ export default function TemplateManagement() {
             </button>
             <button 
               onClick={async () => {
-                toast.dismiss(t.id); // Close confirmation toast
-                await executeDeleteTemplate(id); // Call API logic from hook
+                toast.dismiss(t.id);
+                await executeDeleteTemplate(id);
               }} 
               className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 rounded hover:bg-red-700 transition"
             >
@@ -152,7 +155,6 @@ export default function TemplateManagement() {
                     <td className="px-6 py-4 text-sm text-right flex items-center justify-end gap-2">
                       {isAdmin && (
                         <>
-                          {/* Setup Workflow Button */}
                           <button
                             onClick={() => setSelectedTemplateForWorkflow(tpl)}
                             className="px-3 py-1.5 bg-mosque-light text-mosque-primary hover:bg-mosque-primary hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5"
@@ -161,7 +163,6 @@ export default function TemplateManagement() {
                             {t("template.workflow_btn")}
                           </button>
                           
-                          {/* Delete Button (Triggers Confirmation) */}
                           <button 
                             onClick={() => confirmDelete(tpl.id, tpl.name)}
                             className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded text-xs font-bold transition flex items-center gap-1.5 border border-red-100 hover:border-red-600"
@@ -180,7 +181,6 @@ export default function TemplateManagement() {
         </div>
       </div>
 
-      {/* Render Modal Components */}
       <CreateTemplateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

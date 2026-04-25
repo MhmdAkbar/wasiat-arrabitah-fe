@@ -1,16 +1,18 @@
+// src/hooks/auth/useLogin.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { api } from "@/utils/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useLogin = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { setUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,26 +26,18 @@ export const useLogin = () => {
       });
 
       if (result.success) {
-        const token = result.data.token;
-        const user = result.data.user;
-        console.log("ENV:", import.meta.env.VITE_API_BASE_URL);
-        if (token) {
-          localStorage.setItem("token", token);
-          localStorage.setItem("userEmail", user.email);
-          localStorage.setItem("userName", user.name);
-          localStorage.setItem("userRole", user.role);
+        // Fix: result.data IS the user object, there is no nested 'user' property
+        const userData = result.data;
 
-          navigate("/dashboard");
-        } else {
-          throw new Error(
-            "Login berhasil, tapi token tidak ditemukan di JSON.",
-          );
-        }
+        localStorage.setItem("userData", JSON.stringify(userData));
+        setUser(userData);
+
+        navigate("/dashboard");
       }
     } catch (err) {
       setError(
         err.message === "Failed to fetch"
-          ? "Koneksi ke Server Gagal (Backend Mati/CORS)."
+          ? "Server connection failed (CORS/Down)."
           : err.message,
       );
     } finally {

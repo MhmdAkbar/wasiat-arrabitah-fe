@@ -1,3 +1,4 @@
+// src/hooks/template/useTemplates.js
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/utils/api'; 
 import { toast } from 'react-hot-toast'; 

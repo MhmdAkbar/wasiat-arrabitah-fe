@@ -1,3 +1,4 @@
+// src/pages/dashboard/MyProfile.jsx
 import { useState, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "@/utils/api";

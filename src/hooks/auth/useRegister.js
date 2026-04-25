@@ -1,13 +1,9 @@
+// src/hooks/auth/useRegister.js
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { api } from '@/utils/api';
 import toast from 'react-hot-toast';
 
 export const useRegister = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,28 +20,29 @@ export const useRegister = () => {
     const payload = { name, email, password, role, department: department || null };
 
     try {
-      // Pintu gerbang otomatis menangani header dan error jika status bukan 2xx
-      const result = await api('/api/auth/register', {
+      await api('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify(payload)
       });
       
-      toast.success('Registration successful! Please login.');
-      navigate('/');
+      toast.success('User registered successfully.');
+      // Reset form instead of navigating to root (since this is admin only now)
+      setName(''); setEmail(''); setPassword('');
     } catch (err) {
-      setError(err.message === 'Failed to fetch' ? 'Server Connection Error.' : err.message);
+      // Handle privilege escalation prevention error from backend
+      if (err.message.includes('403')) {
+        setError('Insufficient permission to create this role level.');
+        toast.error('Privilege error: Cannot create higher/equal level accounts.');
+      } else {
+        setError(err.message === 'Failed to fetch' ? 'Server Connection Error.' : err.message);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return {
-    name, setName,
-    email, setEmail,
-    password, setPassword,
-    department, setDepartment,
-    role, setRole,
-    loading, error,
-    handleRegister
+    name, setName, email, setEmail, password, setPassword,
+    department, setDepartment, role, setRole, loading, error, handleRegister
   };
 };

@@ -1,3 +1,4 @@
+// src/components/molecules/submission/DynamicFormRenderer.jsx
 export default function DynamicFormRenderer({ fields, formData, onChange }) {
   if (!fields || fields.length === 0) return null;
 

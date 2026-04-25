@@ -1,3 +1,4 @@
+// src/components/organisms/template/FieldBuilder.jsx
 import { useTranslation } from "react-i18next";
 import FieldItem from "../../molecules/template/FieldItem";
 

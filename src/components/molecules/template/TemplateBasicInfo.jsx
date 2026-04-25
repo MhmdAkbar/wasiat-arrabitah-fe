@@ -1,3 +1,4 @@
+// src/components/molecules/template/TemplateBasicInfo.jsx
 import { useTranslation } from 'react-i18next';
 
 export default function TemplateBasicInfo({ code, setCode, name, setName }) {

@@ -1,3 +1,4 @@
+// src/components/organisms/template/CreateTemplateModal.jsx
 import { useTranslation } from "react-i18next";
 import { useCreateTemplateForm } from "@/hooks/template/useCreateTemplateForm";
 import TemplateBasicInfo from "@/components/molecules/template/TemplateBasicInfo";

@@ -1,21 +1,27 @@
+// src/hooks/dashboard/useDashboard.js
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/utils/api'; 
+import { useAuth } from '@/contexts/AuthContext';
 
 export const useDashboard = () => {
   const [recentDocs, setRecentDocs] = useState([]);
   const [stats, setStats] = useState({ total: 0, pending: 0, approved: 0 });
   const [loading, setLoading] = useState(false);
   
-  const role = localStorage.getItem('userRole');
-  const userName = localStorage.getItem('userName');
+  // Consume reactive user data from context
+  const { user } = useAuth();
+  const role = user?.role;
+  const userName = user?.name;
 
   const fetchDashboardData = useCallback(async () => {
+    if (!role) return; // Prevent fetch if user data is not yet loaded
+
     setLoading(true);
     try {
       let result;
-      // SMART LOGIC: Admin/Director fetch from Global (/all), the rest fetch from Personal (/my)
+      // Smart routing based on role
       if (role === 'admin' || role === 'director') {
-        result = await api('/api/submissions/all?limit=5'); // Fetch only 5 latest for dashboard
+        result = await api('/api/submissions/all?limit=5'); 
       } else {
         result = await api('/api/submissions/my');
       }
@@ -24,7 +30,7 @@ export const useDashboard = () => {
         const data = role === 'admin' || role === 'director' ? result.data : result.data.slice(0, 5);
         setRecentDocs(data);
 
-        // Simulate simple statistics calculation from the fetched data
+        // Simple statistics
         const total = result.meta ? result.meta.totalItems : result.data.length;
         const pending = result.data.filter(d => d.status === 'submitted' || d.status === 'in_progress').length;
         const approved = result.data.filter(d => d.status === 'approved').length;

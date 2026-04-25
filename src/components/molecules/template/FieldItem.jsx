@@ -1,3 +1,4 @@
+// src/components/molecules/template/FieldItem.jsx
 import { useTranslation } from 'react-i18next';
 
 export default function FieldItem({ field, onChange, onRemove, canRemove }) {
